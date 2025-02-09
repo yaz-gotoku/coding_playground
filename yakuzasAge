@@ -1,0 +1,9 @@
+function myFunction() {
+  const userNames = ["桐生一馬","真島五郎","秋山俊","冴島大河","堂島大吾"];
+  const userAges = [48,55,40,40,38];
+for (let i = 0,j = 0; i<= 4 && j<= 4; i += 1,j += 1){
+  console.log(userNames[i] + "は" + userAges[j] + "歳です");
+}
+
+} 
+  
