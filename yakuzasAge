@@ -38,5 +38,18 @@ const keys = Object.keys(gameCharacter);
 for (key of keys){
   console.log(gameCharacter[key]);
 }
+} 
+
+★for of 文でオブジェクトの値を順番に出力（keyだけを集めた新たな配列を作る）その２
+function myFunction() {
+const cityData = {
+  Tokyo: { population: 14000000, area: 2194 },
+  Osaka: { population: 8800000, area: 225 },
+  Nagoya: { population: 2300000, area: 326 }
+};
+const keys = Object.keys(cityData);
+for (const key of keys){
+  console.log(key + "の人口は" + cityData[key].population + "面積は" + cityData[key].area);
+}
 
 } 
