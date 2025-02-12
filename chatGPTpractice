@@ -38,3 +38,27 @@ function myFunction() {
   getMovieInfo("千と千尋の神隠し");
 }
 myFunction();
+
+★上記の発展ifでふるい分け
+function myFunction() {
+  const cityCollection = {
+    "東京" : { country: "日本", population: 1400 },
+"ニューヨーク" : { country: "アメリカ", population: 840 }
+  }
+const getCityInfo = (cityName) =>{
+  const city = cityCollection[cityName];
+  if(city){
+  console.log(`${cityName}は${city.country}の都市で人口は${city.population}です`);
+}
+else{
+  console.log("見当たりません");
+}
+}
+getCityInfo("東京");
+getCityInfo("ニューヨーク")
+getCityInfo("コロンボ");
+}
+
+
+myFunction();
+
