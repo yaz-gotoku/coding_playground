@@ -19,23 +19,22 @@ else{
 }
 
 
-
+★オブジェクト、関数の練習　オブジェクトの値がさらにオブジェクトになっている。getMovieInfo関数に引数はmovieTitle。movieという変数にmovieCollectionの値（オブジェクト）を代入する。
 
 
 function myFunction() {
+  const movieCollection = {
+    "インセプション": { director: "クリストファー・ノーラン", duration: 148 },
+    "千と千尋の神隠し": { director: "宮崎駿", duration: 125 }
+  };
 
-const movieCollection = {
-  "インセプション": { director: "クリストファー・ノーラン", duration: 148 },
-  "千と千尋の神隠し": { director: "宮崎駿", duration: 125 }
-};
+  const getMovieInfo = (movieTitle) => {
+    const movie = movieCollection[movieTitle]; // 正しくデータを取得
+    console.log(`${movieTitle}は${movie.director}の作品で上映時間は${movie.duration}です`)
+  };
+  
 
-const getMovieInfo = (movieTitle) => {
-  const movie = movieCollection[movieTitle];
-  console.log(movie);
-};
-
-getMovieInfo("インセプション");
-getMovieInfo("千と千尋の神隠し");
-
-
+  getMovieInfo("インセプション");
+  getMovieInfo("千と千尋の神隠し");
 }
+myFunction();
