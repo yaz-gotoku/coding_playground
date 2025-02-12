@@ -1,0 +1,41 @@
+★BMI
+function myFunction() {
+let weight = Math.floor(Math.random() * 15 )  + 45;
+let height = Math.random() * 0.45 + 1.45;
+console.log(weight,height);
+bmi  = weight / (height * height);
+if (bmi < 18.5){
+  console.log("痩せている");
+}
+else if(18.5< bmi && bmi < 24.9 ){
+  console.log("普通");
+}
+else if(25.0 < bmi && bmi < 29.9 ){
+  console.log("デブ");
+}
+else{
+  console.log("クソデブ");
+}
+}
+
+
+
+
+
+function myFunction() {
+
+const movieCollection = {
+  "インセプション": { director: "クリストファー・ノーラン", duration: 148 },
+  "千と千尋の神隠し": { director: "宮崎駿", duration: 125 }
+};
+
+const getMovieInfo = (movieTitle) => {
+  const movie = movieCollection[movieTitle];
+  console.log(movie);
+};
+
+getMovieInfo("インセプション");
+getMovieInfo("千と千尋の神隠し");
+
+
+}
