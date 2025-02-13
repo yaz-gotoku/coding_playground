@@ -62,3 +62,27 @@ getCityInfo("コロンボ");
 
 myFunction();
 
+
+★returnで返すバージョン
+
+function myFunction() {
+
+const countryCollection = {
+  "日本" : { capital: "東京", population: 126 },
+"アメリカ" : { capital: "ワシントンD.C.", population: 331 }
+}
+
+const getCountryInfo = (countryName) =>{
+  const city = countryCollection[countryName];
+if(city){
+  return `${countryName}の首都は${city.capital}で人口は${city.population}です`
+}
+else{
+  return "見当たりません"
+}
+}
+console.log(getCountryInfo("日本"));
+}
+
+myFunction();
+
