@@ -86,3 +86,20 @@ console.log(getCountryInfo("日本"));
 
 myFunction();
 
+★インスタンスにプロパティを持たせる（インスタンスとはクラスを基に作られるオブジェクトの事）
+function myFunction() {
+
+class book {
+  constructor(){
+    this.title = "テロリストのパラソル";
+    this.author = "藤原伊織";
+  }
+}
+const story = new book();
+console.log(story);
+}
+
+
+myFunction();
+
+
