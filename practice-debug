@@ -1,0 +1,28 @@
+★try-catch
+
+  function myFunction() {
+
+  try {
+    console.log("Hello");
+  } catch(error) {
+    console.log('--- output error ---');
+    console.log(error.name);
+    console.log(error.message);
+  }
+}
+myFunction();
+
+tryの中でエラーが発生しなければ通表通り、Helloが出力され、catch内は実行されないが
+
+ 
+  function myFunction() {
+  try {
+    notFunction();
+  } catch(error) {
+    console.log('--- output error ---');
+    console.log(error.name);
+    console.log(error.message);
+  }
+}
+
+try内でエラーが発生する（この場合未定義の関数をよびだしている）と、処理がcatchに飛んでcatch内が実行される。
