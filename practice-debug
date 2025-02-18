@@ -26,3 +26,18 @@ tryの中でエラーが発生しなければ通表通り、Helloが出力され
 }
 
 try内でエラーが発生する（この場合未定義の関数をよびだしている）と、処理がcatchに飛んでcatch内が実行される。
+
+★finally文　エラーが起こっても怒らなくてもfinally{}内は必ず実行される
+function myFunction() {
+  try {
+    console.log('hello!');
+  } catch(error) {
+    console.log('--- output error ---');
+    console.log(error.name);
+    console.log(error.message);
+  } finally {
+    console.log('end!');
+  }
+}
+
+myFunction();
