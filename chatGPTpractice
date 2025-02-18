@@ -106,3 +106,23 @@ myFunction();
 const で定義する必要はない
 
 
+★
+function myFunction() {
+class Person{
+  constructor(name,age){
+  this.name = name;
+  this.age = age;
+  }
+intro(){
+  return `${this.name}は${this.age}歳です`
+}
+}
+const watashi = new Person("私","250");
+console.log(watashi.intro());
+
+
+}
+
+myFunction();
+
+
