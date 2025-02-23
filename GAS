@@ -1,0 +1,16 @@
+ function myArray(){
+    let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("配列練習用");
+
+    let data = [
+      ["Hello GAS","Hello GAS","Hello GAS"],
+      ["Hello GAS","Hello GAS","Hello GAS"],
+      ["Hello GAS","Hello GAS","Hello GAS"],
+      ];
+    sheet.getRange(3,2,data.length,data[0].length).setValues(data);
+  }
+
+★↑ sheet.getRange(3,2,data.length,data[0].length).setValues(data);
+3，2は開始位置（3行目の2列目から始める）　data.lengthはdata配列の個数["Hello GAS","Hello GAS","Hello GAS"]が3つあるので3
+data[0].lengthはdata配列のindex0つまり["Hello GAS","Hello GAS","Hello GAS"]の中身の個数なので3
+setValues(data)はdata配列をセットして下さい、の意味　つまり
+３行目2列目から初めて3行、3列にdata配列をセットして下さいの意味
