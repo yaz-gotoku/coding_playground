@@ -46,3 +46,73 @@ function summaryStoreSales(){
 
   }
 
+
+★★★
+reduce()の使い方
+
+配列 = [1,2,3,4,5];
+配列.reduce(function(貯まった値,今の値){
+return 何かの処理;
+},初期値};
+
+★合計を求める
+
+let numbers = [5, 10, 15, 20, 25];
+
+let total = numbers.reduce(function(sum, element) {
+  return sum + element; 
+}, 0);
+
+console.log(total); // 期待される出力: 75
+
+★最大値（最小値）を求める
+
+let numbers = [3, 17, 9, 24, 15];
+
+let max = numbers.reduce(function(maxValue, element) {
+  return element > maxValue ? element : maxValue; // 大きい方を maxValue に残す(値の更新)
+}, numbers[0]); // 初期値は最初の要素（3）
+
+console.log(max); // 期待される出力: 24
+
+element > maxValue ? element : maxValue; ここは三項演算子という構文
+条件式 ? 条件が真の場合の値 : 条件が偽の場合の値;
+
+★配列の中の文字列を1つにまとめる
+
+let words = ["Hello", "world", "this", "is", "JavaScript"];
+
+let result = words.reduce(function(accumulator,currentValue){
+  return accumulator + " " + currentValue;
+}," ");
+
+console.log(result);//出力: "HelloworldthisisJavaScript"
+
+★配列の中身の平均を求める
+let scores = [80, 90, 100, 70, 85];
+
+let total = scores.reduce(function(num,element){
+  return sum + element;
+},0);
+
+let average = total / scores.length;
+
+console.log(average);
+
+★オブジェクトの合計を求める
+
+let salesData = [
+  { store: "店舗A", sales: 100 },
+  { store: "店舗B", sales: 200 },
+  { store: "店舗C", sales: 150 }
+];
+
+let totalSales = salesData.reduce(function(sum,element){
+
+  return sum + element.sales;//処理中の要素（オブジェクト）の値
+},0);
+
+
+
+
+
