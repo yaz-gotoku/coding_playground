@@ -46,6 +46,9 @@ function summaryStoreSales(){
 
   }
 
+★★★
+for (let 〇　in ◇)について
+for (let 〇 in ◇) という構文では、◇ がオブジェクトの場合、そのオブジェクトのキーだけが 〇 に格納されます。
 
 ★★★
 reduce()の使い方
