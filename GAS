@@ -115,7 +115,83 @@ let totalSales = salesData.reduce(function(sum,element){
   return sum + element.sales;//処理中の要素（オブジェクト）の値
 },0);
 
+★★★★★★★
+店舗別集計
+★★★★★★★
 
+function totalWorkingHours() {
+  let stores = {
+    "東京支店":"1b3Vm6ZVTKJiNYVaQywicgz9fPw-VsIeDCay5jwj4WqM",
+    "大阪支店":"1fIg6asrMjtUxbluqje9WclQL0mFKBvsXjn50hY-T7cU",
+    "名古屋支店":"1zbn8R9txHI9yxonl-ON1_H8WkS2d3x4ZGvkcb4bGyUw",
+  };
+
+  let workingHours = [];
+
+  workingHours.push(["店舗名","労働時間"]);
+
+ for ( let store in stores){
+  let sheet = SpreadsheetApp.openById(stores[store]).getSheetByName("1月");
+  let range = sheet.getRange(1,2,sheet.getLastRow());
+  let values = range.getValues().flat();
+
+  let total = values.reduce(function(sum,element){
+    return sum + element;
+  },0);
+
+  workingHours.push([store,total]);
+ } 
+
+ let summarySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("店舗別労働時間");
+ summarySheet.clear();
+ summarySheet.getRange(1,1,workingHours.length,workingHours[0].length).setValues(workingHours);
+  
+}
+
+★★上にエラーハンドリンクを追加★★
+
+function totalWorkingHours() {
+  let stores = {
+    "東京支店": "1b3Vm6ZVTKJiNYVaQywicgz9fPw-VsIeDCay5jwj4WqM",
+    "大阪支店": "1fIg6asrMjtUxbluqje9WclQL0mFKBvsXjn50hY-T7cU",
+    "名古屋支店": "1zbn8R9txHI9yxonl-ON1_H8WkS2d3x4ZGvkcb4bGyUw",
+  };
+
+  let workingHours = [["店舗名", "労働時間"]];
+
+  for (let store in stores) {
+    try {
+      let sheet = SpreadsheetApp.openById(stores[store]).getSheetByName("1月");
+      if (!sheet) {
+        Logger.log(store + "の1月シートが見つかりません。");
+        continue;
+      }
+      let range = sheet.getRange(1, 2, sheet.getLastRow());
+      let values = range.getValues().flat();
+
+      let total = values.reduce((sum, element) => {
+        let num = Number(element);
+        if (isNaN(num)) {
+          Logger.log(store + "の労働時間データに数値以外の値が含まれています: " + element);
+          return sum;
+        }
+        return sum + num;
+      }, 0);
+
+      workingHours.push([store, total]);
+    } catch (e) {
+      Logger.log(store + "の処理中にエラーが発生しました: " + e);
+    }
+  }
+
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let summarySheet = ss.getSheetByName("店舗別労働時間");
+  if (!summarySheet) {
+    summarySheet = ss.insertSheet("店舗別労働時間");
+  }
+  summarySheet.clearContents();
+  summarySheet.getRange(1, 1, workingHours.length, workingHours[0].length).setValues(workingHours);
+}
 
 
 
