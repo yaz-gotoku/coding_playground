@@ -227,4 +227,27 @@ function salesOfItem() {
 }
 
 
+★★★★
+Googleフォームから質問と回答を取得してifで分岐をつけて氏名とアドレスだけを出力
+★★★★
+
+function myForm() {
+
+  let formResponses = FormApp.getActiveForm().getResponses();
+
+  for(let formResponse of formResponses){
+    let itemResponses = formResponse.getItemResponses();
+    
+    for(let itemResponse of itemResponses){
+      let title = itemResponse.getItem().getTitle();
+      let response = itemResponse.getResponse();
+
+      if(title ==="氏名" || title === "アドレス"){
+        console.log(title+response);
+
+      }
+    }
+  }
+}
+
 
