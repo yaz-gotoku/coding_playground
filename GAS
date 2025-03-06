@@ -337,5 +337,32 @@ function myGmailThread(){
   }
 }
 
+★★★スプレッドシートにある名前とアドレスにGmailを自動送信★★★
+function myFunction() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  const sheet = ss.getSheetByName("連絡先");
+
+  const firstRow = 2;
+
+  const nameCol = 1;
+
+  const mailCol = 2;
+
+  const contactNum = sheet.getLastRow()-(firstRow-1);
+
+  const subjest = "テストメール";
+
+  for(let i = 0; i< contactNum; i++){
+
+    const name = sheet.getRange(firstRow + i, nameCol).getValue();
+
+    const to = sheet.getRange(firstRow + i, mailCol).getValue();
+
+    const body = `${name}さま\n\nこれはテストメールです。`;
+
+    GmailApp.sendEmail(to,subjest,body);
+  }
+}
 
 
