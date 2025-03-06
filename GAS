@@ -251,3 +251,91 @@ function myForm() {
 }
 
 
+★★★gmail最初のメッセージ2件のスレッドを取得しき let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let summarySheet = ss.getSheetByName("店舗別労働時間");
+  if (!summarySheet) {
+    summarySheet = ss.insertSheet("店舗別労働時間");
+  }
+  summarySheet.clearContents();
+  summarySheet.getRange(1, 1, workingHours.length, workingHours[0].length).setValues(workingHours);
+}
+
+★★★★★★
+課題：店舗別の売上表から特定の商品の売上をスプレッドシートで自動集計しよう（chatちゃんが作ってくれた課題）
+
+function salesOfItem() {
+  let stores = {
+    "店舗A": "12chJ9jc1P5U0Uq8Vf21XpNn81AwAEstTedHzruQz3bc",
+    "店舗B": "19jMf5ntlKY_r7hT9WQGPW-9mR7Ibh7KzhxU0pgNIi08",
+    "店舗C": "16yxhdi1XzhIf5oBb6imOZFyKbuqYosawlmZ1u-7cz1w",
+  };
+
+  let sales = [["店舗名", "商品名", "金額"]];
+  let targetItem = "車"; // 集計対象の商品名
+
+  for (let store in stores) {
+    let sheet = SpreadsheetApp.openById(stores[store]).getSheetByName("1月");
+    let range = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4);
+    let values = range.getValues(); // 二次元配列を取得 ⇚ここでflatを使わない。
+
+    let total = 0;
+    for (let i = 0; i < values.length; i++) {
+      if (values[i][0] === targetItem) { // 商品名が一致する場合
+        total += values[i][3]; // 金額を加算
+      }
+    }
+
+    sales.push([store, targetItem, total]);
+  }
+
+  let summarySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("特定商品の売上");
+  summarySheet.clearContents(); // clearContents()を使用
+  summarySheet.getRange(1, 1, sales.length, sales[0].length).setValues(sales);
+}
+
+
+★★★★
+Googleフォームから質問と回答を取得してifで分岐をつけて氏名とアドレスだけを出力
+★★★★
+
+function myForm() {
+
+  let formResponses = FormApp.getActiveForm().getResponses();
+
+  for(let formResponse of formResponses){
+    let itemResponses = formResponse.getItemResponses();
+    
+    for(let itemResponse of itemResponses){
+      let title = itemResponse.getItem().getTitle();
+      let response = itemResponse.getResponse();
+
+      if(title ==="氏名" || title === "アドレス"){
+        console.log(title+response);
+
+      }
+    }
+  }
+}
+
+
+★★★gmail最初のメッセージ2件のスレッドを取得し未読と既読を入れ替える★★★
+function myGmailThread(){
+  let start= 0;
+  let max = 2;
+
+  let threads = GmailApp.getInboxThreads(start,max);
+
+  for(let thread of threads){
+    console.log("件名"+ thread.getFirstMessageSubject());
+    console.log("スレッド内のメッセージ数"+ thread.getMessageCount());
+
+    if(thread.isUnread()){
+      thread.markRead();
+    }else{
+      thread.markUnread();
+    }
+  }
+}
+
+
+
