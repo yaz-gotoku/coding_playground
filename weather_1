@@ -1,0 +1,80 @@
+#geocodeを使って緯度経度を取得しそれを使って天気予報を取得する（3地点）
+
+import requests
+import json
+from datetime import datetime
+
+#geocodeについての記述
+
+
+api_key = "AIzaSyD4PhW0gpYNT9NKP5HLjrV3nEM_bP1GjPE"
+locations = ["大田区, 東京", "八王子市, 東京", "多摩市, 東京"]
+
+#エンドポイントとパラメーター（loop）
+geocode_url = "https://maps.googleapis.com/maps/api/geocode/json"
+
+#結果を入れる空のリストを用意
+location_coods = []
+
+#各地点についてloop処理
+for location in locations:
+  response = requests.get(
+    geocode_url,
+    params={
+      "address":location,
+      "key":api_key
+    }
+  )
+  
+  geocode_data = response.json()
+  latitude = geocode_data["results"][0]["geometry"]["location"]["lat"]
+  longitude = geocode_data["results"][0]["geometry"]["location"]["lng"]
+  
+  #空のリストに結果を入れる
+  location_coods.append({
+  "location":location,
+  "lat":latitude,
+  "lng":longitude
+  })
+  #print(f"{location}の緯度:{latitude},経度:{longitude}")
+  
+#全ての地点のデータをファイルに保存（毎回上書きではなくリストにする）
+with open('all_locations_coords.json', 'w', encoding='utf-8') as f:
+    json.dump(location_coods, f, indent=2, ensure_ascii=False)
+
+#↑ここまでで経度と緯度を取得しました
+
+#ここからは↑で取得した経度緯度を使って天気を取得する
+
+weather_api_key = "29b096651ecc2494fea93d5503e28e99"
+weather_url = "https://api.openweathermap.org/data/2.5/weather"
+
+#location_coodsというリストに複数の地点情報（辞書型）が入っているので、1つずつ辞書を取り出して緯度(lat),経度(lng),場所名(location)をそれぞれ変数に取り出す
+
+#構造を確認したい時にテキストファイルを作ってそこにlocation_coodsの構造を記録する
+with open('fileweathernew.txt', 'w', encoding='utf-8') as f:
+    json.dump(location_coods, f, indent=2, ensure_ascii=False)
+
+for loc in location_coods:
+  lat = loc["lat"]
+  lon = loc["lng"]
+  location_name = loc["location"]
+  
+  response = requests.get(
+    weather_url,
+    params={
+      "lat":lat,
+      "lon":lon,
+      "appid":weather_api_key,
+      "units":"metric",#摂氏にする
+      "lang":"ja",#日本語で取得
+    }
+  )
+  weather_data = response.json()
+  
+  #天気の説明と気温を取り出す（例）
+  description = weather_data["weather"][0]["description"]
+  temp = weather_data["main"]["temp"]
+  
+  print(f"{location_name}の現在の天気:{description},気温:{temp}℃")
+
