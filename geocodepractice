@@ -1,0 +1,76 @@
+#これが完成形
+
+import requests
+from getpass import getpass
+import json
+
+#練習用
+#api_key = "AIzaSyD4PhW0gpYNT9NKP5HLjrV3nEM_bP1GjPE"これらでイチイチAPIや駅名を入力せずに練習できる
+#location = "新宿駅"
+
+api_key = input("Google Maps APIキーを入力してください: ")
+location = input("駅名を入力してください（例：新宿駅）: ")
+
+#本当は以下２行を使ってユーザーに入力してもらう
+#api_key = getpass('APIキーを入力してください: ')
+#location = input('検索する駅を入力してください: ')
+
+geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json'
+response = requests.get(
+    geocode_url,
+    params={
+        'address': location,
+        'key': api_key
+    }
+)
+
+geocode_data = response.json()
+
+latitude = geocode_data['results'][0]['geometry']['location']['lat']
+longitude = geocode_data['results'][0]['geometry']['location']['lng']
+
+url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+
+response = requests.get(
+    url,
+    params={
+        'location': f'{latitude},{longitude}',
+        'language': 'ja',
+        'radius': 500,
+        'type': 'restaurant',
+        'key': api_key
+    }
+)
+
+data = response.json()
+
+#構造を確認したい時にテキストファイルを作ってそこにdataの構造を記録する
+
+with open('file1-1.txt', 'w', encoding='utf-8') as f:
+    json.dump(data["results"][0]["name"], f, indent=2, ensure_ascii=False)
+
+with open('file1-2.txt', 'w', encoding='utf-8') as f:
+    json.dump(data["results"][0], f, indent=2, ensure_ascii=False)
+    
+with open('file1-3.txt', 'w', encoding='utf-8') as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
+
+print(data)
+
+#print(data["results"][0])    #⇚これで１つ目の店舗名を確認できる
+
+#空の配列を用意
+restaurants = []
+
+#for文でdata['results']の中身を1件ずつplaceに入れる.pleceは店の情報（名前、住所、他が詰まった辞書）
+
+for place in data['results']:
+        restaurant = {
+            'name': place['name'],
+            'rating': place.get('rating', 'N/A'),
+            'address': place.get('vicinity', 'N/A'),
+            'types': place.get('types', []),
+            'place_id': place['place_id']
+        }
+        restaurants.append(restaurant)
+        print(restaurant['name'], restaurant['rating'], restaurant['address'])
