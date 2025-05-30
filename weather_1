@@ -78,3 +78,84 @@ for loc in location_coods:
   
   print(f"{location_name}の現在の天気:{description},気温:{temp}℃")
 
+
+
+
+
+
+#エラーハンドリング対応
+import requests
+import json
+from datetime import datetime
+
+#geocoodingAPIについて設定
+geocode_url = "https://maps.googleapis.com/maps/api/geocode/json"
+geocode_api_key = "AIzaSyD4PhW0gpYNT9NKP5HLjrV3nEM_bP1GjPE"
+locations = ["大田区, 東京", "八王子市, 東京", "多摩市, 東京"]
+
+#結果を格納する空のリスト
+location_code = []
+
+#for文の中でgeocoodingAPIを使って各地点の緯度経度を取得する
+for location in locations:
+  response = requests.get(
+    geocode_url,
+    params= {
+      "address":location,
+      "key":geocode_api_key
+    }
+  )
+  
+  #エラーハンドリング
+  if response.status_code == 200:
+      geocode_data = response.json()
+      if geocode_data["results"]:
+        latitude = geocode_data["results"][0]["geometry"]["location"]["lat"]
+        longitude = geocode_data["results"][0]["geometry"]["location"]["lng"]
+        location_code.append({
+        "location":location,
+        "lat":latitude,
+        "lng":longitude
+      })
+      else:
+        print(f"{location}の位置情報が見つかりませんでした")
+  else:
+    print(f"{location}の経度緯度取得に失敗しました(ステータスコード:{response.status_code})")
+    
+#緯度経度のデデータをjsonファイルに保存
+with open('all_locations.json', 'w', encoding='utf-8') as f:
+    json.dump(location_code, f, indent=2, ensure_ascii=False)
+    
+#openweatherAPIの設定
+wether_api_key = "29b096651ecc2494fea93d5503e28e99"
+wether_url = "https://api.openweathermap.org/data/2.5/weather"
+
+#構造確認用ファイル保存
+with open('fileweather.txt', 'w', encoding='utf-8') as f:
+    json.dump(location_code, f, indent=2, ensure_ascii=False)
+    
+#for文の中で各地点の天気を取得し表示
+for loc in location_code:
+  lat = loc["lat"]
+  lon = loc["lng"]
+  location_name = loc["location"]
+  
+  response = requests.get(
+    wether_url,
+    params={
+      "lat":lat,
+      "lon":lon,
+      "appid":wether_api_key,
+      "units":"metric",#摂氏
+      "lang":"ja"#日本語
+    }
+  )    
+
+  if response.status_code == 200:
+    weather_data = response.json()
+    description = weather_data["weather"][0]["description"]
+    temp = weather_data["main"]["temp"]
+    print(f"{location_name}の現在の天気:{description},気温:{temp}℃")
+  else:
+    print(f"{location_name}の天気の取得に失敗しました（ステータスコード:{response.status_code}")
+
