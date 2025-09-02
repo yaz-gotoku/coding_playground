@@ -1,0 +1,42 @@
+#9/3 openpyxlを使って請求書を作る
+
+from openpyxl import Workbook
+
+#新しいExcelファイルを作成
+wb = Workbook()
+ws = wb.active
+ws.title = "請求書"
+
+#タイトルや会社名
+ws["A1"] = "請求書"
+ws["A2"] = "株式会社サンプル"
+ws["A3"] = "発売日: 2025/9/3"
+
+#表の見出し
+ws["A5"] = "品目"
+ws["B5"] = "数量"
+ws["C5"] = "単価"
+ws["D5"] = "金額"
+
+#データを準備
+data = [
+  ["りんご",10,100],
+  ["みかん",5,80],
+  ["ぶどう",2,500],
+]
+
+#データの書き込み（数量×単価で金額を計算）
+row = 6
+for item,qty,price in data:
+    ws[f"A{row}"] = item
+    ws[f"B{row}"] = qty
+    ws[f"C{row}"] = price
+    ws[f"D{row}"] = f"B{row}*C{row}"
+    row += 1
+
+#合計を追加
+ws[f"C{row}"] = "合計"
+ws[f"D{row}"] = f"SUM(D6:D{row-1})"
+
+#保存
+wb.save("請求書.xlsx")
